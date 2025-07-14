@@ -10,106 +10,120 @@
   <div class="container mx-auto p-4">
     <h1 class="text-3xl font-bold text-center mb-6">UK Camping Tour Manager</h1>
 
-    <!-- Form for adding/editing destinations and uploading CSV -->
-    <div class="bg-white p-6 rounded-lg shadow-md mb-6">
-      <h2 class="text-xl font-semibold mb-4">Add/Edit Destination or Upload CSV</h2>
-      <form id="campForm" class="space-y-4 grid grid-cols-1 md:grid-cols-2 gap-4">
-        <div>
-          <label for="name" class="block text-sm font-medium text-gray-700">Name</label>
-          <input type="text" id="name" class="mt-1 p-2 w-full border rounded-md" required>
+    <!-- Tab Navigation -->
+    <div class="mb-4">
+      <ul class="flex border-b">
+        <li class="mr-2">
+          <button id="dataEntryTab" class="inline-block p-4 border-b-2 border-transparent hover:text-blue-500 hover:border-blue-500 focus:outline-none" onclick="openTab('dataEntry')">Data Entry</button>
+        </li>
+        <li class="mr-2">
+          <button id="destinationsTab" class="inline-block p-4 border-b-2 border-transparent hover:text-blue-500 hover:border-blue-500 focus:outline-none" onclick="openTab('destinations')">Destinations</button>
+        </li>
+      </ul>
+    </div>
+
+    <!-- Tab Content -->
+    <div id="dataEntry" class="tab-content">
+      <div class="bg-white p-6 rounded-lg shadow-md mb-6">
+        <h2 class="text-xl font-semibold mb-4">Add/Edit Destination or Upload CSV</h2>
+        <form id="campForm" class="space-y-4 grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div>
+            <label for="name" class="block text-sm font-medium text-gray-700">Name</label>
+            <input type="text" id="name" class="mt-1 p-2 w-full border rounded-md" required>
+          </div>
+          <div>
+            <label for="hoursDriving" class="block text-sm font-medium text-gray-700">Hours Driving</label>
+            <input type="number" id="hoursDriving" step="0.1" class="mt-1 p-2 w-full border rounded-md" required>
+          </div>
+          <div>
+            <label for="arrive" class="block text-sm font-medium text-gray-700">Arrive</label>
+            <input type="text" id="arrive" class="mt-1 p-2 w-full border rounded-md" required>
+          </div>
+          <div>
+            <label for="leave" class="block text-sm font-medium text-gray-700">Leave</label>
+            <input type="text" id="leave" class="mt-1 p-2 w-full border rounded-md" required>
+          </div>
+          <div>
+            <label for="noOfNights" class="block text-sm font-medium text-gray-700">No. of Nights</label>
+            <input type="number" id="noOfNights" class="mt-1 p-2 w-full border rounded-md" required>
+          </div>
+          <div>
+            <label for="website" class="block text-sm font-medium text-gray-700">Website</label>
+            <input type="url" id="website" class="mt-1 p-2 w-full border rounded-md">
+          </div>
+          <div>
+            <label for="asked" class="block text-sm font-medium text-gray-700">Asked</label>
+            <input type="text" id="asked" class="mt-1 p-2 w-full border rounded-md">
+          </div>
+          <div>
+            <label for="booked" class="block text-sm font-medium text-gray-700">Booked</label>
+            <input type="text" id="booked" class="mt-1 p-2 w-full border rounded-md">
+          </div>
+          <div>
+            <label for="paid" class="block text-sm font-medium text-gray-700">Paid</label>
+            <input type="text" id="paid" class="mt-1 p-2 w-full border rounded-md">
+          </div>
+          <div>
+            <label for="bookingId" class="block text-sm font-medium text-gray-700">Booking ID</label>
+            <input type="text" id="bookingId" class="mt-1 p-2 w-full border rounded-md">
+          </div>
+          <div>
+            <label for="email" class="block text-sm font-medium text-gray-700">Email</label>
+            <input type="email" id="email" class="mt-1 p-2 w-full border rounded-md">
+          </div>
+          <div>
+            <label for="phone" class="block text-sm font-medium text-gray-700">Phone</label>
+            <input type="tel" id="phone" class="mt-1 p-2 w-full border rounded-md">
+          </div>
+          <div>
+            <label for="pricePerNight" class="block text-sm font-medium text-gray-700">Price (per night)</label>
+            <input type="number" id="pricePerNight" step="0.01" class="mt-1 p-2 w-full border rounded-md">
+          </div>
+          <div>
+            <label for="totalPrice" class="block text-sm font-medium text-gray-700">Total Price</label>
+            <input type="number" id="totalPrice" step="0.01" class="mt-1 p-2 w-full border rounded-md">
+          </div>
+          <input type="hidden" id="editIndex" value="-1">
+          <div class="col-span-2">
+            <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600">Save Destination</button>
+            <button type="button" id="cancelEdit" class="bg-gray-300 text-gray-700 px-4 py-2 rounded-md hover:bg-gray-400 hidden">Cancel</button>
+          </div>
+        </form>
+        <div class="mt-4">
+          <label for="csvUpload" class="block text-sm font-medium text-gray-700">Upload CSV File</label>
+          <input type="file" id="csvUpload" accept=".csv" class="mt-1 p-2 w-full border rounded-md">
+          <button id="uploadCsvButton" class="mt-2 bg-green-500 text-white px-4 py-2 rounded-md hover:bg-green-600">Upload CSV</button>
         </div>
-        <div>
-          <label for="hoursDriving" class="block text-sm font-medium text-gray-700">Hours Driving</label>
-          <input type="number" id="hoursDriving" step="0.1" class="mt-1 p-2 w-full border rounded-md" required>
-        </div>
-        <div>
-          <label for="arrive" class="block text-sm font-medium text-gray-700">Arrive</label>
-          <input type="text" id="arrive" class="mt-1 p-2 w-full border rounded-md" required>
-        </div>
-        <div>
-          <label for="leave" class="block text-sm font-medium text-gray-700">Leave</label>
-          <input type="text" id="leave" class="mt-1 p-2 w-full border rounded-md" required>
-        </div>
-        <div>
-          <label for="noOfNights" class="block text-sm font-medium text-gray-700">No. of Nights</label>
-          <input type="number" id="noOfNights" class="mt-1 p-2 w-full border rounded-md" required>
-        </div>
-        <div>
-          <label for="website" class="block text-sm font-medium text-gray-700">Website</label>
-          <input type="url" id="website" class="mt-1 p-2 w-full border rounded-md">
-        </div>
-        <div>
-          <label for="asked" class="block text-sm font-medium text-gray-700">Asked</label>
-          <input type="text" id="asked" class="mt-1 p-2 w-full border rounded-md">
-        </div>
-        <div>
-          <label for="booked" class="block text-sm font-medium text-gray-700">Booked</label>
-          <input type="text" id="booked" class="mt-1 p-2 w-full border rounded-md">
-        </div>
-        <div>
-          <label for="paid" class="block text-sm font-medium text-gray-700">Paid</label>
-          <input type="text" id="paid" class="mt-1 p-2 w-full border rounded-md">
-        </div>
-        <div>
-          <label for="bookingId" class="block text-sm font-medium text-gray-700">Booking ID</label>
-          <input type="text" id="bookingId" class="mt-1 p-2 w-full border rounded-md">
-        </div>
-        <div>
-          <label for="email" class="block text-sm font-medium text-gray-700">Email</label>
-          <input type="email" id="email" class="mt-1 p-2 w-full border rounded-md">
-        </div>
-        <div>
-          <label for="phone" class="block text-sm font-medium text-gray-700">Phone</label>
-          <input type="tel" id="phone" class="mt-1 p-2 w-full border rounded-md">
-        </div>
-        <div>
-          <label for="pricePerNight" class="block text-sm font-medium text-gray-700">Price (per night)</label>
-          <input type="number" id="pricePerNight" step="0.01" class="mt-1 p-2 w-full border rounded-md">
-        </div>
-        <div>
-          <label for="totalPrice" class="block text-sm font-medium text-gray-700">Total Price</label>
-          <input type="number" id="totalPrice" step="0.01" class="mt-1 p-2 w-full border rounded-md">
-        </div>
-        <input type="hidden" id="editIndex" value="-1">
-        <div class="col-span-2">
-          <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600">Save Destination</button>
-          <button type="button" id="cancelEdit" class="bg-gray-300 text-gray-700 px-4 py-2 rounded-md hover:bg-gray-400 hidden">Cancel</button>
-        </div>
-      </form>
-      <div class="mt-4">
-        <label for="csvUpload" class="block text-sm font-medium text-gray-700">Upload CSV File</label>
-        <input type="file" id="csvUpload" accept=".csv" class="mt-1 p-2 w-full border rounded-md">
-        <button id="uploadCsvButton" class="mt-2 bg-green-500 text-white px-4 py-2 rounded-md hover:bg-green-600">Upload CSV</button>
       </div>
     </div>
 
-    <!-- Table to display destinations -->
-    <div class="bg-white p-6 rounded-lg shadow-md overflow-x-auto">
-      <h2 class="text-xl font-semibold mb-4">Destinations</h2>
-      <table id="campTable" class="w-full border-collapse text-sm min-w-[800px]">
-        <thead>
-          <tr class="bg-gray-200">
-            <th class="border p-1 text-left">Name</th>
-            <th class="border p-1 text-left">Hours Driving</th>
-            <th class="border p-1 text-left">Arrive</th>
-            <th class="border p-1 text-left">Leave</th>
-            <th class="border p-1 text-left">No. of Nights</th>
-            <th class="border p-1 text-left">Website</th>
-            <th class="border p-1 text-left">Asked</th>
-            <th class="border p-1 text-left">Booked</th>
-            <th class="border p-1 text-left">Paid</th>
-            <th class="border p-1 text-left">Booking ID</th>
-            <th class="border p-1 text-left">Email</th>
-            <th class="border p-1 text-left">Phone</th>
-            <th class="border p-1 text-left">Price (per night)</th>
-            <th class="border p-1 text-left">Total Price</th>
-            <th class="border p-1 text-left">Actions</th>
-          </tr>
-        </thead>
-        <tbody id="campTableBody"></tbody>
-      </table>
+    <div id="destinations" class="tab-content hidden">
+      <div class="bg-white p-6 rounded-lg shadow-md overflow-x-auto">
+        <h2 class="text-xl font-semibold mb-4">Destinations</h2>
+        <table id="campTable" class="w-full border-collapse text-sm min-w-[800px]">
+          <thead>
+            <tr class="bg-gray-200">
+              <th class="border p-1 text-left">Name</th>
+              <th class="border p-1 text-left">Hours Driving</th>
+              <th class="border p-1 text-left">Arrive</th>
+              <th class="border p-1 text-left">Leave</th>
+              <th class="border p-1 text-left">No. of Nights</th>
+              <th class="border p-1 text-left">Website</th>
+              <th class="border p-1 text-left">Asked</th>
+              <th class="border p-1 text-left">Booked</th>
+              <th class="border p-1 text-left">Paid</th>
+              <th class="border p-1 text-left">Booking ID</th>
+              <th class="border p-1 text-left">Email</th>
+              <th class="border p-1 text-left">Phone</th>
+              <th class="border p-1 text-left">Price (per night)</th>
+              <th class="border p-1 text-left">Total Price</th>
+              <th class="border p-1 text-left">Actions</th>
+            </tr>
+          </thead>
+          <tbody id="campTableBody"></tbody>
+        </table>
+      </div>
     </div>
-  </div>
 
   <script>
     const campForm = document.getElementById('campForm');
@@ -124,6 +138,25 @@
       destinations = JSON.parse(localStorage.getItem('campingDestinations'));
       renderTable();
     }
+
+    // Tab switching function
+    function openTab(tabName) {
+      const tabs = document.getElementsByClassName('tab-content');
+      for (let i = 0; i < tabs.length; i++) {
+        tabs[i].style.display = 'none';
+      }
+      document.getElementById(tabName).style.display = 'block';
+
+      // Update active tab style
+      document.getElementById('dataEntryTab').classList.remove('border-blue-500', 'text-blue-500');
+      document.getElementById('destinationsTab').classList.remove('border-blue-500', 'text-blue-500');
+      document.getElementById(tabName + 'Tab').classList.add('border-blue-500', 'text-blue-500');
+    }
+
+    // Show Data Entry tab by default
+    document.addEventListener('DOMContentLoaded', () => {
+      openTab('dataEntry');
+    });
 
     // Form submission for manual entry
     campForm.addEventListener('submit', (e) => {
@@ -160,6 +193,7 @@
       localStorage.setItem('campingDestinations', JSON.stringify(destinations));
       renderTable();
       campForm.reset();
+      openTab('destinations'); // Switch to Destinations tab after saving
     });
 
     // Cancel edit
@@ -209,6 +243,7 @@
           renderTable();
           csvUploadInput.value = ''; // Clear file input
           alert('CSV uploaded successfully!');
+          openTab('destinations'); // Switch to Destinations tab after upload
         } catch (error) {
           alert('Error parsing CSV file: ' + error.message + '. Please ensure it is correctly formatted.');
           console.error('CSV parsing error:', error);
@@ -265,6 +300,7 @@
       document.getElementById('totalPrice').value = dest.totalPrice;
       document.getElementById('editIndex').value = index;
       cancelEditButton.classList.remove('hidden');
+      openTab('dataEntry'); // Switch to Data Entry tab for editing
     };
 
     // Delete destination
