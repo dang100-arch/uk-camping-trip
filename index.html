@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>UK Camping Tour Manager</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 font-sans">
+  <div class="container mx-auto p-4">
+    <h1 class="text-3xl font-bold text-center mb-6">UK Camping Tour Manager</h1>
+
+    <!-- Form for adding/editing destinations and uploading CSV -->
+    <div class="bg-white p-6 rounded-lg shadow-md mb-6">
+      <h2 class="text-xl font-semibold mb-4">Add/Edit Destination or Upload CSV</h2>
+      <form id="campForm" class="space-y-4 grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div>
+          <label for="name" class="block text-sm font-medium text-gray-700">Name</label>
+          <input type="text" id="name" class="mt-1 p-2 w-full border rounded-md" required>
+        </div>
+        <div>
+          <label for="hoursDriving" class="block text-sm font-medium text-gray-700">Hours Driving</label>
+          <input type="number" id="hoursDriving" step="0.1" class="mt-1 p-2 w-full border rounded-md" required>
+        </div>
+        <div>
+          <label for="arrive" class="block text-sm font-medium text-gray-700">Arrive</label>
+          <input type="text" id="arrive" class="mt-1 p-2 w-full border rounded-md" required>
+        </div>
+        <div>
+          <label for="leave" class="block text-sm font-medium text-gray-700">Leave</label>
+          <input type="text" id="leave" class="mt-1 p-2 w-full border rounded-md" required>
+        </div>
+        <div>
+          <label for="noOfNights" class="block text-sm font-medium text-gray-700">No. of Nights</label>
+          <input type="number" id="noOfNights" class="mt-1 p-2 w-full border rounded-md" required>
+        </div>
+        <div>
+          <label for="website" class="block text-sm font-medium text-gray-700">Website</label>
+          <input type="url" id="website" class="mt-1 p-2 w-full border rounded-md">
+        </div>
+        <div>
+          <label for="asked" class="block text-sm font-medium text-gray-700">Asked</label>
+          <input type="text" id="asked" class="mt-1 p-2 w-full border rounded-md">
+        </div>
+        <div>
+          <label for="booked" class="block text-sm font-medium text-gray-700">Booked</label>
+          <input type="text" id="booked" class="mt-1 p-2 w-full border rounded-md">
+        </div>
+        <div>
+          <label for="paid" class="block text-sm font-medium text-gray-700">Paid</label>
+          <input type="text" id="paid" class="mt-1 p-2 w-full border rounded-md">
+        </div>
+        <div>
+          <label for="bookingId" class="block text-sm font-medium text-gray-700">Booking ID</label>
+          <input type="text" id="bookingId" class="mt-1 p-2 w-full border rounded-md">
+        </div>
+        <div>
+          <label for="email" class="block text-sm font-medium text-gray-700">Email</label>
+          <input type="email" id="email" class="mt-1 p-2 w-full border rounded-md">
+        </div>
+        <div>
+          <label for="phone" class="block text-sm font-medium text-gray-700">Phone</label>
+          <input type="tel" id="phone" class="mt-1 p-2 w-full border rounded-md">
+        </div>
+        <div>
+          <label for="pricePerNight" class="block text-sm font-medium text-gray-700">Price (per night)</label>
+          <input type="number" id="pricePerNight" step="0.01" class="mt-1 p-2 w-full border rounded-md">
+        </div>
+        <div>
+          <label for="totalPrice" class="block text-sm font-medium text-gray-700">Total Price</label>
+          <input type="number" id="totalPrice" step="0.01" class="mt-1 p-2 w-full border rounded-md">
+        </div>
+        <input type="hidden" id="editIndex" value="-1">
+        <div class="col-span-2">
+          <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600">Save Destination</button>
+          <button type="button" id="cancelEdit" class="bg-gray-300 text-gray-700 px-4 py-2 rounded-md hover:bg-gray-400 hidden">Cancel</button>
+        </div>
+      </form>
+      <div class="mt-4">
+        <label for="csvUpload" class="block text-sm font-medium text-gray-700">Upload CSV File</label>
+        <input type="file" id="csvUpload" accept=".csv" class="mt-1 p-2 w-full border rounded-md">
+        <button id="uploadCsvButton" class="mt-2 bg-green-500 text-white px-4 py-2 rounded-md hover:bg-green-600">Upload CSV</button>
+      </div>
+    </div>
+
+    <!-- Table to display destinations -->
+    <div class="bg-white p-6 rounded-lg shadow-md">
+      <h2 class="text-xl font-semibold mb-4">Destinations</h2>
+      <table id="campTable" class="w-full border-collapse text-sm">
+        <thead>
+          <tr class="bg-gray-200">
+            <th class="border p-2 text-left">Name</th>
+            <th class="border p-2 text-left">Hours Driving</th>
+            <th class="border p-2 text-left">Arrive</th>
+            <th class="border p-2 text-left">Leave</th>
+            <th class="border p-2 text-left">No. of Nights</th>
+            <th class="border p-2 text-left">Website</th>
+            <th class="border p-2 text-left">Asked</th>
+            <th class="border p-2 text-left">Booked</th>
+            <th class="border p-2 text-left">Paid</th>
+            <th class="border p-2 text-left">Booking ID</th>
+            <th class="border p-2 text-left">Email</th>
+            <th class="border p-2 text-left">Phone</th>
+            <th class="border p-2 text-left">Price (per night)</th>
+            <th class="border p-2 text-left">Total Price</th>
+            <th class="border p-2 text-left">Actions</th>
+          </tr>
+        </thead>
+        <tbody id="campTableBody"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <script>
+    const campForm = document.getElementById('campForm');
+    const campTableBody = document.getElementById('campTableBody');
+    const cancelEditButton = document.getElementById('cancelEdit');
+    const csvUploadInput = document.getElementById('csvUpload');
+    const uploadCsvButton = document.getElementById('uploadCsvButton');
+    let destinations = [];
+
+    // Load destinations from localStorage (if any)
+    if (localStorage.getItem('campingDestinations')) {
+      destinations = JSON.parse(localStorage.getItem('campingDestinations'));
+      renderTable();
+    }
+
+    // Form submission for manual entry
+    campForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const destination = {
+        name: document.getElementById('name').value,
+        hoursDriving: document.getElementById('hoursDriving').value,
+        arrive: document.getElementById('arrive').value,
+        leave: document.getElementById('leave').value,
+        noOfNights: document.getElementById('noOfNights').value,
+        website: document.getElementById('website').value,
+        asked: document.getElementById('asked').value,
+        booked: document.getElementById('booked').value,
+        paid: document.getElementById('paid').value,
+        bookingId: document.getElementById('bookingId').value,
+        email: document.getElementById('email').value,
+        phone: document.getElementById('phone').value,
+        pricePerNight: document.getElementById('pricePerNight').value,
+        totalPrice: document.getElementById('totalPrice').value
+      };
+      const editIndex = document.getElementById('editIndex').value;
+
+      if (editIndex === '-1') {
+        // Add new destination
+        destinations.push(destination);
+      } else {
+        // Update existing destination
+        destinations[editIndex] = destination;
+        document.getElementById('editIndex').value = '-1';
+        cancelEditButton.classList.add('hidden');
+      }
+
+      // Save to localStorage
+      localStorage.setItem('campingDestinations', JSON.stringify(destinations));
+      renderTable();
+      campForm.reset();
+    });
+
+    // Cancel edit
+    cancelEditButton.addEventListener('click', () => {
+      campForm.reset();
+      document.getElementById('editIndex').value = '-1';
+      cancelEditButton.classList.add('hidden');
+    });
+
+    // Handle CSV upload
+    uploadCsvButton.addEventListener('click', () => {
+      const file = csvUploadInput.files[0];
+      if (!file) {
+        alert('Please select a CSV file to upload.');
+        return;
+      }
+
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        const text = e.target.result;
+        try {
+          // Parse CSV
+          const lines = text.split('\n').map(line => line.trim()).filter(line => line);
+          const headers = lines[0].split(',').map(header => header.trim());
+          
+          // Validate headers
+          const expectedHeaders = ['Name', 'Hours driving', 'Arrive', 'Leave', 'No. of nights', 'Website', 'Asked', 'Booked', 'Paid', 'Booking ID', 'Email', 'Phone', 'Price (per night)', 'Total price'];
+          if (!expectedHeaders.every((header, i) => header === headers[i])) {
+            alert('Invalid CSV format. Expected headers: ' + expectedHeaders.join(','));
+            return;
+          }
+
+          // Parse data rows (skip header)
+          const newDestinations = [];
+          for (let i = 1; i < lines.length; i++) {
+            const [name, hoursDriving, arrive, leave, noOfNights, website, asked, booked, paid, bookingId, email, phone, pricePerNight, totalPrice] = lines[i].split(',').map(item => item.trim());
+            if (name && hoursDriving && arrive && leave && noOfNights) {
+              newDestinations.push({ name, hoursDriving, arrive, leave, noOfNights, website, asked, booked, paid, bookingId, email, phone, pricePerNight, totalPrice });
+            }
+          }
+
+          // Append or replace destinations
+          destinations = [...destinations, ...newDestinations];
+          localStorage.setItem('campingDestinations', JSON.stringify(destinations));
+          renderTable();
+          csvUploadInput.value = ''; // Clear file input
+          alert('CSV uploaded successfully!');
+        } catch (error) {
+          alert('Error parsing CSV file. Please ensure it is correctly formatted.');
+          console.error(error);
+        }
+      };
+      reader.readAsText(file);
+    });
+
+    // Render table
+    function renderTable() {
+      campTableBody.innerHTML = '';
+      destinations.forEach((dest, index) => {
+        const row = document.createElement('tr');
+        row.innerHTML = `
+          <td class="border p-2">${dest.name}</td>
+          <td class="border p-2">${dest.hoursDriving}</td>
+          <td class="border p-2">${dest.arrive}</td>
+          <td class="border p-2">${dest.leave}</td>
+          <td class="border p-2">${dest.noOfNights}</td>
+          <td class="border p-2">${dest.website ? `<a href="${dest.website}" class="text-blue-500 hover:underline" target="_blank">${dest.website}</a>` : ''}</td>
+          <td class="border p-2">${dest.asked}</td>
+          <td class="border p-2">${dest.booked}</td>
+          <td class="border p-2">${dest.paid}</td>
+          <td class="border p-2">${dest.bookingId}</td>
+          <td class="border p-2">${dest.email}</td>
+          <td class="border p-2">${dest.phone}</td>
+          <td class="border p-2">${dest.pricePerNight}</td>
+          <td class="border p-2">${dest.totalPrice}</td>
+          <td class="border p-2">
+            <button onclick="editDestination(${index})" class="bg-yellow-500 text-white px-2 py-1 rounded hover:bg-yellow-600">Edit</button>
+            <button onclick="deleteDestination(${index})" class="bg-red-500 text-white px-2 py-1 rounded hover:bg-red-600">Delete</button>
+          </td>
+        `;
+        campTableBody.appendChild(row);
+      });
+    }
+
+    // Edit destination
+    window.editDestination = (index) => {
+      const dest = destinations[index];
+      document.getElementById('name').value = dest.name;
+      document.getElementById('hoursDriving').value = dest.hoursDriving;
+      document.getElementById('arrive').value = dest.arrive;
+      document.getElementById('leave').value = dest.leave;
+      document.getElementById('noOfNights').value = dest.noOfNights;
+      document.getElementById('website').value = dest.website;
+      document.getElementById('asked').value = dest.asked;
+      document.getElementById('booked').value = dest.booked;
+      document.getElementById('paid').value = dest.paid;
+      document.getElementById('bookingId').value = dest.bookingId;
+      document.getElementById('email').value = dest.email;
+      document.getElementById('phone').value = dest.phone;
+      document.getElementById('pricePerNight').value = dest.pricePerNight;
+      document.getElementById('totalPrice').value = dest.totalPrice;
+      document.getElementById('editIndex').value = index;
+      cancelEditButton.classList.remove('hidden');
+    };
+
+    // Delete destination
+    window.deleteDestination = (index) => {
+      if (confirm('Are you sure you want to delete this destination?')) {
+        destinations.splice(index, 1);
+        localStorage.setItem('campingDestinations', JSON.stringify(destinations));
+        renderTable();
+      }
+    };
+  </script>
+</body>
+</html>
